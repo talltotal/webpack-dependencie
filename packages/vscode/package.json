@@ -1,0 +1,86 @@
+{
+    "name": "webpack-dependencie",
+    "displayName": "Webpack Dependencie",
+    "description": "",
+    "version": "0.0.1",
+    "publisher": "talltotal",
+    "engines": {
+        "vscode": "^1.37.0"
+    },
+    "icon": "icon.png",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/talltotal/webpack-dependencie.git"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "keywords": [
+        "webpack",
+        "Dependencie"
+    ],
+    "activationEvents": [
+        "*"
+    ],
+    "main": "./out/index.js",
+    "contributes": {
+        "commands": [
+            {
+                "command": "WebpackDependencie.listNoDep",
+                "title": "List No Dep"
+            },
+            {
+                "command": "WebpackDependencie.listDep",
+                "title": "File References"
+            },
+            {
+                "command": "WebpackDependencie.openFile",
+                "title": "File References: Open File"
+            }
+        ],
+        "menus": {
+            "explorer/context": [
+        		{
+                    "command": "WebpackDependencie.listNoDep",
+                    "group": "navigation@100",
+                    "when": "explorerResourceIsFolder"
+        		},
+        		{
+                    "command": "WebpackDependencie.listDep",
+                    "group": "navigation@100",
+                    "when": "!explorerResourceIsFolder"
+        		}
+            ],
+        	"editor/context": [
+        		{
+        			"command": "WebpackDependencie.listDep",
+                    "group": "navigation@100"
+        		}
+        	]
+        },
+        "views": {
+            "explorer": [
+                {
+                    "id": "file-reference__list",
+                    "name": "File References",
+                    "when": "fileReferencesEnabled"
+                },
+                {
+                    "id": "no-reference__list",
+                    "name": "No References",
+                    "when": "fileReferencesEnabled"
+                }
+            ]
+        },
+        "configuration": {
+            "title": "Webpack Dependencie",
+            "properties": {
+                "WebpackDependencie.open": {
+                    "type": "boolean",
+                    "description": "Whether to turn on Webpack Dependencie.",
+                    "default": true
+                }
+            }
+        }
+    }
+}
