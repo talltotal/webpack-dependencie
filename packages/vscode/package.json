@@ -43,18 +43,19 @@
         		{
                     "command": "WebpackDependencie.listNoDep",
                     "group": "navigation@100",
-                    "when": "explorerResourceIsFolder"
+                    "when": "explorerResourceIsFolder && fileReferencesOpen"
         		},
         		{
                     "command": "WebpackDependencie.listDep",
                     "group": "navigation@100",
-                    "when": "!explorerResourceIsFolder"
+                    "when": "!explorerResourceIsFolder  && fileReferencesOpen"
         		}
             ],
         	"editor/context": [
         		{
         			"command": "WebpackDependencie.listDep",
-                    "group": "navigation@100"
+                    "group": "navigation@100",
+                    "when": "fileReferencesOpen"
         		}
         	]
         },
@@ -68,7 +69,7 @@
                 {
                     "id": "no-reference__list",
                     "name": "No References",
-                    "when": "fileReferencesEnabled"
+                    "when": "noReferencesEnabled"
                 }
             ]
         },

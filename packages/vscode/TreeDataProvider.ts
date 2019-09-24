@@ -1,8 +1,14 @@
 import * as vscode from 'vscode'
-const path = require('path')
+import * as path from 'path'
 
 export class TreeDataProvider implements vscode.TreeDataProvider<vscode.TreeItem> {
     locs: Array<vscode.Location | object> = []
+
+    getInfoItem (info: string): vscode.TreeItem {
+        const item = new vscode.TreeItem('')
+        item.description = info
+        return item
+    }
 
     getTreeItem (element: vscode.TreeItem): vscode.TreeItem {
         return element
@@ -10,11 +16,10 @@ export class TreeDataProvider implements vscode.TreeDataProvider<vscode.TreeItem
 
     getChildren (): vscode.TreeItem[] {
         const len = this.locs.length
-        // TODO 信息的展示方式
         return [
             len
-                ? new vscode.TreeItem(`find ${len} file${len === 1 ? '' : 's'}`)
-                : new vscode.TreeItem(`No results found.`),
+                ? this.getInfoItem(`find ${len} file${len === 1 ? '' : 's'}`)
+                : this.getInfoItem(`No results found.`),
             ...this.locs.map(item => {
                 if (item.constructor === vscode.Location) {
                     const tt = <vscode.Location>item
@@ -42,6 +47,7 @@ export class TreeDataProvider implements vscode.TreeDataProvider<vscode.TreeItem
                     const tt = <any>item
                     const viewItem = new vscode.TreeItem(tt.title)
                     viewItem.description = tt.des
+                    viewItem.tooltip = tt.des
 
                     return viewItem
                 }

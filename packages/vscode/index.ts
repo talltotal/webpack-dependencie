@@ -2,7 +2,8 @@ import * as vscode from 'vscode'
 import * as fs from 'fs'
 import * as path from 'path'
 import { TreeDataProvider } from './TreeDataProvider'
-let depFilePath = ''
+let depFilePath: string = '/Users/wangweicong/github/webpack-dependencie/packages/webpack/.dep.json'
+let isOpen: boolean = getOpenConfig()
 
 function findDepFilePath (relativePath: string) {
     const cache: any = {}
@@ -33,51 +34,63 @@ function findDepFilePath (relativePath: string) {
 function viewTreeCommendFactory (context: vscode.ExtensionContext): (
     commandName: string,
     viewId: string,
+    visibleKey: string,
     getViewList: (fsPath: string) => any[]
 ) => void {
     const findDepFilePathf = findDepFilePath('./webpack-dependencie-plugin/.dep.json')
     const treeDataProvider = new TreeDataProvider()
-    vscode.window.registerTreeDataProvider('file-reference__list', treeDataProvider)
+    vscode.window.registerTreeDataProvider('reference__list', treeDataProvider)
+    let viewTree: vscode.TreeView<any>
+    let preVisibleKey: string
 
     return function (
         commandName: string,
         viewId: string,
+        visibleKey: string,
         getViewList: (fsPath: string) => any[]
     ) : void {
         context.subscriptions.push(
             vscode.commands.registerCommand(
                 commandName,
                 ({ fsPath }) => {
+                    if (!isOpen) {
+                        return
+                    }
                     if (fsPath.indexOf('node_modules') !== -1) {
                         return
                     }
-                    depFilePath = findDepFilePathf(fsPath)
+                    // depFilePath = findDepFilePathf(fsPath)
                     if (!depFilePath || !fs.existsSync(depFilePath)) {
                         return
                     }
                     const listData = getViewList(fsPath)
-                    if (!listData || !listData.length) {
-                        return
+                    treeDataProvider.show(listData || [])
+                    if (viewTree) {
+                        viewTree.dispose()
+                        vscode.commands.executeCommand(
+                            'setContext',
+                            preVisibleKey,
+                            false
+                        )
                     }
-                    treeDataProvider.show(listData)
-                    const viewTree = vscode.window.createTreeView(viewId, {
+                    viewTree = vscode.window.createTreeView(viewId, {
                         treeDataProvider: treeDataProvider,
                         showCollapseAll: false
                     })
-                    // TODO 展开
+                    preVisibleKey = visibleKey
                     viewTree.onDidChangeVisibility(({ visible }) => {
                         if (!visible) {
                             viewTree.dispose()
                             vscode.commands.executeCommand(
                                 'setContext',
-                                'fileReferencesEnabled',
+                                visibleKey,
                                 false
                             )
                         }
                     })
                     vscode.commands.executeCommand(
                         'setContext',
-                        'fileReferencesEnabled',
+                        visibleKey,
                         true
                     )
                 }
@@ -114,6 +127,7 @@ export function activate(context: vscode.ExtensionContext) {
     createView(
         'WebpackDependencie.listDep',
         'file-reference__list',
+        'fileReferencesEnabled',
         (fsPath: string): any[] => {
             const files: any = require(depFilePath)
             const refs = files[fsPath] || {}
@@ -138,6 +152,7 @@ export function activate(context: vscode.ExtensionContext) {
     createView(
         'WebpackDependencie.listNoDep',
         'no-reference__list',
+        'noReferencesEnabled',
         (fsPath: string): any[] => {
             function getAllFileFromDir (dirPath: string, arr: string[] = []): string[] {
                 fs.readdirSync(dirPath, {
@@ -166,7 +181,23 @@ export function activate(context: vscode.ExtensionContext) {
             })
         }
     )
+    vscode.workspace.onDidChangeConfiguration(() => {
+        isOpen = getOpenConfig()
+	})
 }
 
 export function deactivate() {
+}
+
+
+function getOpenConfig (): boolean {
+	const isOpen = !!vscode.workspace.getConfiguration('WebpackDependencie')
+	.get('open')
+    vscode.commands.executeCommand(
+        'setContext',
+        'fileReferencesOpen',
+        isOpen
+    )
+
+    return isOpen
 }
