@@ -1,8 +1,8 @@
 {
     "name": "webpack-dependencie",
     "displayName": "Webpack Dependencie",
-    "description": "",
-    "version": "0.0.1",
+    "description": "Show the number of times the file is dependent.",
+    "version": "0.0.2",
     "publisher": "talltotal",
     "engines": {
         "vscode": "^1.37.0"
@@ -40,24 +40,24 @@
         ],
         "menus": {
             "explorer/context": [
-        		{
+                {
                     "command": "WebpackDependencie.listNoDep",
                     "group": "navigation@100",
                     "when": "explorerResourceIsFolder && fileReferencesOpen"
-        		},
-        		{
+                },
+                {
                     "command": "WebpackDependencie.listDep",
                     "group": "navigation@100",
                     "when": "!explorerResourceIsFolder  && fileReferencesOpen"
-        		}
+                }
             ],
-        	"editor/context": [
-        		{
-        			"command": "WebpackDependencie.listDep",
+            "editor/context": [
+                {
+                    "command": "WebpackDependencie.listDep",
                     "group": "navigation@100",
                     "when": "fileReferencesOpen"
-        		}
-        	]
+                }
+            ]
         },
         "views": {
             "explorer": [

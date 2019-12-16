@@ -6,7 +6,7 @@ const fs = require('fs')
 const path = require('path')
 const basePack = require('../package.json')
 const packs = ['../packages/vscode/', '../packages/webpack/']
-const syncKey = ['name', 'description', 'version', 'keywords']
+const syncKey = ['version', 'keywords']
 
 packs.forEach(item => {
     const packPath = path.resolve(__dirname, item, 'package.json')

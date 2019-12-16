@@ -19,7 +19,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
   node ./script/prePublish.js
 
   cd ./packages/webpack
-  npm run publish
+  npm publish
   cd ../vscode
   vsce package
   vsce publish

@@ -1,6 +1,6 @@
 {
 	"name": "webpack-dependencie",
-	"description": "",
+	"description": "Count & Show the number of times the file is dependent.",
 	"version": "0.0.1",
 	"repository": {
 		"type": "git",

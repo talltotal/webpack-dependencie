@@ -1,6 +1,8 @@
 # Webpack Dependencie
 > webpack插件 + vscode插件组合，显示文件被依赖关系
 
+> Count & Show the number of times the file is dependent.
+
 ==> WIP <==
 
 ## use
@@ -9,7 +11,7 @@
 ### webpack plugin
 
 ```js
-import WebpackDependenciePlugin from 'webpack-dependencie-plugin'
+import WebpackDependenciePlugin from '@talltotal/webpack-dependencie'
 import webpack from 'webpack'
 
 webpack({

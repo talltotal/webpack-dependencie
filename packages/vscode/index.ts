@@ -2,7 +2,7 @@ import * as vscode from 'vscode'
 import * as fs from 'fs'
 import * as path from 'path'
 import { TreeDataProvider } from './TreeDataProvider'
-let depFilePath: string = '/Users/wangweicong/github/webpack-dependencie/packages/webpack/.dep.json'
+let depFilePath: string = ''
 let isOpen: boolean = getOpenConfig()
 
 function findDepFilePath (relativePath: string) {
@@ -37,9 +37,9 @@ function viewTreeCommendFactory (context: vscode.ExtensionContext): (
     visibleKey: string,
     getViewList: (fsPath: string) => any[]
 ) => void {
-    const findDepFilePathf = findDepFilePath('./webpack-dependencie-plugin/.dep.json')
+    const findDepFilePathf = findDepFilePath('./@talltotal/webpack-dependencie/.dep.json')
     const treeDataProvider = new TreeDataProvider()
-    vscode.window.registerTreeDataProvider('reference__list', treeDataProvider)
+    vscode.window.registerTreeDataProvider('file-reference__list', treeDataProvider)
     let viewTree: vscode.TreeView<any>
     let preVisibleKey: string
 
@@ -59,7 +59,7 @@ function viewTreeCommendFactory (context: vscode.ExtensionContext): (
                     if (fsPath.indexOf('node_modules') !== -1) {
                         return
                     }
-                    // depFilePath = findDepFilePathf(fsPath)
+                    depFilePath = findDepFilePathf(fsPath)
                     if (!depFilePath || !fs.existsSync(depFilePath)) {
                         return
                     }

@@ -1,11 +1,17 @@
 {
-    "name": "webpack-dependencie",
-    "description": "",
+    "name": "@talltotal/webpack-dependencie",
+    "description": "Count the number of times the file is dependent.",
     "version": "0.0.1",
+    "author": "talltotal",
+    "license": "MIT",
     "repository": {
         "type": "git",
         "url": "https://github.com/talltotal/webpack-dependencie.git"
     },
+    "bugs": {
+        "url": "https://github.com/talltotal/webpack-dependencie/issues"
+    },
+    "homepage": "https://github.com/talltotal/webpack-dependencie",
     "keywords": [
         "webpack",
         "Dependencie"
